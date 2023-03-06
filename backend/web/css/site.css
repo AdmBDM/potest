@@ -90,6 +90,7 @@ a.desc:after {
 }
 
 .work-area {
+    position: relative;
     display: block;
     width: 1000px;
     height: 500px;
@@ -97,9 +98,16 @@ a.desc:after {
     border: 1px solid blue;
 }
 
-.tree-area {
+.tree-area-outside {
     margin: 30px 50px;
     position: absolute;
+
+}
+
+.tree-area {
+    width: 100%;
+    height: 100%;
+    position: relative;
     display: block;
     background-color: lightgreen;
     border: 1px solid red;
@@ -107,5 +115,23 @@ a.desc:after {
 
 .apple-area {
     position: relative;
-    border-radius: 50%;
+    display: inline-block;
+}
+
+.ground-area {
+    height: 10px;
+    background-color: saddlebrown;
+    position: absolute;
+    bottom: 0;
+}
+
+.trashcan-area {
+    width: 200px;
+    height: 100px;
+    /*background-color: black;*/
+    border-left: black 10px solid;
+    border-right: black 10px solid;
+    border-bottom: black 10px solid;
+    position: absolute;
+    bottom: 0;
 }

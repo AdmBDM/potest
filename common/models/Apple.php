@@ -2,42 +2,117 @@
 
 namespace common\models;
 
-use yii\base\Model;
+use Yii;
+use yii\db\ActiveRecord;
 
-class Apple extends Model
+/**
+ * This is the model class for table "apple".
+ *
+ * @property int $id
+ * @property int|null $tree_id
+ * @property string $createTime
+ * @property string $dropTime
+ * @property int $coordX
+ * @property int $coordY
+ * @property int $radius
+ * @property string $color
+ * @property int $reminder
+ * @property int $status
+ */
+class Apple extends ActiveRecord
 {
-	public $createTime;
-	public $dropTime;
-	public $crdX;
-	public $crdY;
-	public $radius;
-//	public $color;
-	public $status;
-
-
 	public function __construct()
 	{
-		$this->crdX = 0;
-		$this->crdY = 0;
 
+		$this->tree_id = 1;
 		$this->createTime = time();
 		$this->dropTime = $this->createTime + (60 * 60 * 24 * 7);
-		$this->radius = mt_rand(10, 20);
+		$this->coordX = 0;
+		$this->coordY = 0;
+		$this->radius = mt_rand(7, 17);
+		$this->color = $this->setAppleColor();
+		$this->reminder = 100;
 		$this->status = 0;
 	}
 
-	private function setAppleColor() {
+	/**
+	 * @return string
+	 */
+    public static function tableName(): string
+	{
+        return 'apple';
+    }
+
+	/**
+	 * @return array
+	 */
+    public function rules(): array
+	{
+        return [
+            [['tree_id', 'coordX', 'coordY', 'radius', 'reminder', 'status'], 'integer'],
+            [['createTime', 'dropTime'], 'required'],
+            [['createTime', 'dropTime'], 'safe'],
+            [['color'], 'string', 'max' => 7],
+        ];
+    }
+
+	/**
+	 * @return string[]
+	 */
+    public function attributeLabels(): array
+	{
+        return [
+            'id' => 'ID',
+            'tree_id' => 'Tree ID',
+            'createTime' => 'Созрело',
+            'dropTime' => 'Годно до',
+            'coordX' => 'Coord X',
+            'coordY' => 'Coord Y',
+            'radius' => 'Радиус',
+            'color' => 'Цвет',
+            'reminder' => 'Осталось (%)',
+            'status' => 'Статус',
+        ];
+    }
+
+	/**
+	 * @return string
+	 */
+	private function setAppleColor(): string
+	{
 		$green = ['00', '33', '66', '99', 'CC', 'FF'];
 		return '#FF' . $green[mt_rand(0, 5)] . '00';
 	}
 
-
-	public function getApple() {
-		return '<div class="apple-area" ' .
-			'style="
-				width: ' . $this->radius . 'px; 
-				height: ' . $this->radius . 'px; 
-				background-color: ' . $this->setAppleColor() .
+	/**
+	 * @return string
+	 */
+	public function getDivAppleOnTree(): string
+	{
+		return '<div ' .
+			'style="position: absolute; display: inline-block; margin: 0; padding: 0;
+				width: ' . $this->radius * 2 . 'px; 
+				height: ' . $this->radius * 2 . 'px; 
+				left: ' . $this->coordX . 'px; 
+				top: ' . $this->coordY . 'px; 
+				border-radius: 50%;
+				background-color: ' . $this->color .
 			';"></div>';
 	}
+
+	/**
+	 * @param string $tree
+	 *
+	 * @return void
+	 */
+	public function setAppleOnTree($tree) {
+		if (is_null($tree)) {
+			$this->coordX = 0;
+			$this->coordY = 0;
+		} else {
+			$this->coordX = $tree->setAppleX();
+			$this->coordY = $tree->setAppleY();
+		}
+	}
+
 }

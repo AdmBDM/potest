@@ -29,20 +29,29 @@ class PotstController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$treeApple = new Tree();
-		$apples = [];
 
-//		for ($i=1; self::HOW_APPLES; $i++) {
-//			$apples[] = new Apple();
-//		}
+// "создаём" яблоню
+//		$treeApple = new Tree();
+		$treeApple = Tree::findOne(['id' => 1]);
 
+// "создаём" яблоки
 		$apples = [
 			new Apple(),
 			new Apple(),
 			new Apple(),
 			new Apple(),
 			new Apple(),
+			new Apple(),
+			new Apple(),
+			new Apple(),
+			new Apple(),
+			new Apple(),
 		];
+
+// размещаем яблоки на яблоне
+		foreach ($apples as $apple) {
+			$apple->setAppleOnTree($treeApple);
+		}
 
 		return $this->render('index', [
 				'treeApple' => $treeApple,

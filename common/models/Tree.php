@@ -2,16 +2,31 @@
 
 namespace common\models;
 
-use yii\base\Model;
+use yii\db\ActiveRecord;
 
-class Tree extends Model
+/**
+ * This is the model class for table "tree".
+ *
+ * @property int $id
+ * @property string $nameTree
+ * @property int $border
+ * @property int $xTreeFrom
+ * @property int $xTreeTo
+ * @property int $yTreeFrom
+ * @property int $yTreeTo
+ */
+class Tree extends ActiveRecord
 {
-	public $xTreeFrom;
-	public $xTreeTo;
-	public $yTreeFrom;
-	public $yTreeTo;
+	const BORDER = 5;
+	public int $countApple;
 
-	public function __construct($xFrom = 0, $xTo = 500, $yFrom = 0, $yTo = 100)
+	/**
+	 * @param int $xFrom
+	 * @param int $xTo
+	 * @param int $yFrom
+	 * @param int $yTo
+	 */
+	public function __construct(int $xFrom = 0, int $xTo = 500, int $yFrom = 0, int $yTo = 100)
 	{
 		$this->xTreeFrom = $xFrom;
 		$this->xTreeTo = $xTo;
@@ -19,19 +34,71 @@ class Tree extends Model
 		$this->yTreeTo = $yTo;
 	}
 
-	public function getCoordNewApple() {
-		return [
-			'x' => mt_rand($this->xTreeFrom, $this->xTreeTo),
-			'y' => mt_rand($this->yTreeFrom, $this->yTreeTo),
-		];
-	}
+	/**
+	 * @return string
+	 */
+    public static function tableName(): string
+	{
+        return 'tree';
+    }
 
-	public function getTreeWidth() {
+	/**
+	 * @return array
+	 */
+    public function rules(): array
+	{
+        return [
+            [['border', 'xTreeFrom', 'xTreeTo', 'yTreeFrom', 'yTreeTo'], 'integer'],
+            [['nameTree'], 'string', 'max' => 100],
+        ];
+    }
+
+	/**
+	 * @return string[]
+	 */
+    public function attributeLabels(): array
+	{
+        return [
+            'id' => 'ID',
+            'nameTree' => 'Дерево',
+            'border' => 'Border',
+            'xTreeFrom' => 'X с',
+            'xTreeTo' => 'X по',
+            'yTreeFrom' => 'Y с',
+            'yTreeTo' => 'Y по',
+        ];
+    }
+
+	/**
+	 * @return int
+	 */
+	public function getTreeWidth(): int
+	{
 		return $this->xTreeTo - $this->xTreeFrom;
 	}
 
-	public function getTreeHeight() {
+	/**
+	 * @return int
+	 */
+	public function getTreeHeight(): int
+	{
 		return $this->yTreeTo - $this->yTreeFrom;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function setAppleX(): int
+	{
+		return mt_rand(self::BORDER, $this->getTreeWidth() - self::BORDER);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function setAppleY(): int
+	{
+		return mt_rand(self::BORDER, $this->getTreeHeight() - self::BORDER);
 	}
 
 }
