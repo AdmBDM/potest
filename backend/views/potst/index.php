@@ -1,11 +1,13 @@
 <?php
 
+	use common\models\Apple;
 	use common\models\Tree;
 
-
 	/* @var $treeApple Tree */
-	/* @var $apples array */
-
+	/* @var $apples Apple */
+	/* @var $applesGood array */
+	/* @var $applesDrop array */
+	/* @var $applesBad array */
 
 ?>
 
@@ -17,7 +19,7 @@
 				 height: <?= $treeApple->getTreeHeight(); ?>px;">
 		<div class="tree-area">
 
-			<?php foreach ($apples as $apple) {echo $apple->getDivAppleOnTree();} ?>
+			<?php foreach ($applesGood as $apple) {echo $apple->getDivAppleOnTree();} ?>
 
 		</div>
 	</div>
@@ -26,10 +28,13 @@
 		 style="margin-left: <?= $treeApple->xTreeFrom; ?>px;
 				 width: <?= $treeApple->getTreeWidth(); ?>px;">
 
+		<?php foreach ($applesDrop as $apple) {echo $apple->getDivDropApple();} ?>
+
 	</div>
 
 	<div class="trashcan-area"
 		 style="margin-left: <?= $treeApple->xTreeTo + 100; ?>px;">
+		<?php foreach ($applesBad as $apple) {echo $apple->getDivAppleOnTree();} ?>
 	</div>
 
 

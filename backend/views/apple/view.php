@@ -1,29 +1,24 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\DetailView;
+	use yii\helpers\Html;
+	use yii\web\YiiAsset;
+	use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Apple $model */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Apples', 'url' => ['index']];
+$this->title = 'Яблоко' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Яблоки', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+
+YiiAsset::register($this);
 ?>
 <div class="apple-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -31,8 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'tree_id',
-            'createTime',
-            'dropTime',
+			[
+				'attribute' => 'createTime',
+				'format' => ['date', 'php:d.m.Y H:i:s'],
+			],
+			[
+				'attribute' => 'dropTime',
+				'format' => ['date', 'php:d.m.Y H:i:s'],
+			],
             'coordX',
             'coordY',
             'radius',

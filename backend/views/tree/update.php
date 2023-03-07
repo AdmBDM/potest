@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Tree $model */
 
-$this->title = 'Update Tree: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Trees', 'url' => ['index']];
+$this->title = 'Изменить Дерево: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Деревья', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Изменить';
 ?>
 <div class="tree-update">
 

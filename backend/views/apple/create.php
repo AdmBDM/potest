@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Apple $model */
 
-$this->title = 'Create Apple';
-$this->params['breadcrumbs'][] = ['label' => 'Apples', 'url' => ['index']];
+$this->title = 'Новое Яблоко';
+$this->params['breadcrumbs'][] = ['label' => 'Яблоки', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="apple-create">

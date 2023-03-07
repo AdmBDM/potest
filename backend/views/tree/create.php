@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Tree $model */
 
-$this->title = 'Create Tree';
-$this->params['breadcrumbs'][] = ['label' => 'Trees', 'url' => ['index']];
+$this->title = 'Новое Дерево';
+$this->params['breadcrumbs'][] = ['label' => 'Деревья', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tree-create">

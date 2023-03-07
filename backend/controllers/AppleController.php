@@ -144,7 +144,10 @@ class AppleController extends Controller
 
 	public function actionDrop($id)
 	{
-
+		$model = $this->findModel($id);
+		$model->status = 1;
+		$model->dropTime = time();
+		$model->save();
 		return $this->redirect(['index']);
 	}
 }

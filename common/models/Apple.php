@@ -27,8 +27,8 @@ class Apple extends ActiveRecord
 		$this->tree_id = 1;
 		$this->createTime = time();
 		$this->dropTime = $this->createTime + (60 * 60 * 24 * 7);
-		$this->coordX = 0;
-		$this->coordY = 0;
+		$this->coordX = -7;
+		$this->coordY = -7;
 		$this->radius = mt_rand(7, 17);
 		$this->color = $this->setAppleColor();
 		$this->reminder = 100;
@@ -65,7 +65,7 @@ class Apple extends ActiveRecord
             'id' => 'ID',
             'tree_id' => 'Tree ID',
             'createTime' => 'Созрело',
-            'dropTime' => 'Годно до',
+            'dropTime' => 'Упадёт/Упало',
             'coordX' => 'Coord X',
             'coordY' => 'Coord Y',
             'radius' => 'Радиус',
@@ -97,7 +97,7 @@ class Apple extends ActiveRecord
 				top: ' . $this->coordY . 'px; 
 				border-radius: 50%;
 				background-color: ' . $this->color .
-			';"></div>';
+			';" id="apple' . $this->id . '"' .  $this->getOnclickStr($this->id) . '></div>';
 	}
 
 	/**
@@ -110,9 +110,34 @@ class Apple extends ActiveRecord
 			$this->coordX = 0;
 			$this->coordY = 0;
 		} else {
-			$this->coordX = $tree->setAppleX();
-			$this->coordY = $tree->setAppleY();
+			$this->coordX = $this->coordX > 0 ?: $tree->setAppleX();
+			$this->coordY = $this->coordY > 0 ?: $tree->setAppleY();
 		}
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getDivDropApple(): string
+	{
+		return '<div ' .
+				'style="position: relative; display: inline-block; margin: 0; padding: 0;
+				width: ' . $this->radius * 2 . 'px; 
+				height: ' . $this->radius * 2 . 'px; 
+				left: ' . $this->coordX . 'px; 
+				bottom: ' . $this->radius * 2 . 'px; 
+				border-radius: 50%;
+				background-color: ' . $this->color .
+				';" id="apple' . $this->id . '"' .  $this->getOnclickStr($this->id) . '></div>';
+	}
+
+	/**
+	 * @param $id
+	 *
+	 * @return string
+	 */
+	private function getOnclickStr($id): string
+	{
+		return ' onclick="clickApple(' . $id . ')"';
+	}
 }

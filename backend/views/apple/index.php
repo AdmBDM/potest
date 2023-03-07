@@ -35,8 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
 						return $model->status === 0 ? Html::a($icon, $url) : '';
 					},
 					'eat' => function ($url, $model, $key) {
-						$icon = Html::tag('span', 'Съесть');
-						return $model->status === 0 ? Html::a($icon, $url) : '';
+						$icon = Html::tag('span', 'Откусить');
+						return $model->status === 1 ? Html::a($icon, $url) : '';
 					},
 				],
 				'urlCreator' => function ($action, Apple $model, $key, $index, $column) {
@@ -45,13 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 //            'id',
 //            'tree_id',
-//            'createTime',
 			[
 				'attribute' => 'createTime',
 				'format' => ['date', 'php:d.m.Y H:i:s'],
 				'options' => ['width' => '200px'],
 			],
-//            'dropTime',
 			[
 				'attribute' => 'dropTime',
 				'format' => ['date', 'php:d.m.Y H:i:s'],
@@ -59,13 +57,20 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 //            'coordX',
 //            'coordY',
-//            'radius',
 			[
 				'attribute' => 'radius',
 				'options' => ['width' => '100px'],
 			],
 //            'color',
-//            'reminder',
+			[
+				'label' => 'Испортится через',
+				'value' => function($model) {
+					if ($model->status === 0) return null;
+					return  ($model->dropTime + 60 * 60 * 2) - time() ;
+				},
+				'format' => ['date', 'php:H:i:s'],
+				'options' => ['width' => '50px'],
+			],
 			[
 				'attribute' => 'reminder',
 				'options' => ['width' => '100px'],

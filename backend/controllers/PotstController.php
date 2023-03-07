@@ -30,32 +30,27 @@ class PotstController extends Controller
 	public function actionIndex()
 	{
 
-// "создаём" яблоню
-//		$treeApple = new Tree();
+// считываем дерево
 		$treeApple = Tree::findOne(['id' => 1]);
 
-// "создаём" яблоки
-		$apples = [
-			new Apple(),
-			new Apple(),
-			new Apple(),
-			new Apple(),
-			new Apple(),
-			new Apple(),
-			new Apple(),
-			new Apple(),
-			new Apple(),
-			new Apple(),
-		];
+// считываем яблоки
+		$applesGood = Apple::find()->where('status = 0')->all();
+		$applesDrop = Apple::find()->where('status = 1')->all();
+		$applesBad = Apple::find()->where('status = 2')->all();
 
-// размещаем яблоки на яблоне
-		foreach ($apples as $apple) {
-			$apple->setAppleOnTree($treeApple);
+// размещаем яблоки на дереве
+		foreach ($applesGood as $apple) {
+			if ($apple->coordX < 0 || $apple->coordY < 0) {
+				$apple->setAppleOnTree($treeApple);
+				$apple->save();
+			}
 		}
 
 		return $this->render('index', [
 				'treeApple' => $treeApple,
-				'apples' => $apples,
+				'applesGood' => $applesGood,
+				'applesDrop' => $applesDrop,
+				'applesBad' => $applesBad,
 		]);
 	}
 
