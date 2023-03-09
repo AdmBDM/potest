@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				}
 			],
 			[
-				'attribute' => 'id',
+				'attribute' => 'ID',
 				'options' => ['width' => '50px'],
 			],
 //            'tree_id',

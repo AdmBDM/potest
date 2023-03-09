@@ -104,6 +104,10 @@ a.desc:after {
     border: 1px solid blue;
 }
 
+.work-area h3 {
+    text-align: center;
+}
+
 .tree-area-outside {
     margin: 30px 50px;
     position: absolute;

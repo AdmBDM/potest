@@ -42,6 +42,7 @@
 ?>
 
 <div class="work-area">
+	<h3>Для выполнения действий - кликните по яблоку</h3>
 
 	<div class="ground-area"
 		 style="margin-left: <?= $treeApple->xTreeFrom; ?>px;
