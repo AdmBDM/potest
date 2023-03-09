@@ -13,9 +13,11 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'css/popup.css',
     ];
     public $js = [
 		'js/apples.js',
+		'js/popup.js',
     ];
     public $depends = [
 		'yii\web\JqueryAsset',

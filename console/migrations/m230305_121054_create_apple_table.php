@@ -22,6 +22,7 @@ class m230305_121054_create_apple_table extends Migration
 			'tree_id' => $this->integer()->defaultValue(1),
 			'createTime' => $this->integer()->notNull(),
 			'dropTime' => $this->integer()->notNull(),
+			'ruinTime' => $this->integer()->notNull(),
 			'coordX' => $this->integer()->defaultValue(0)->notNull(),
 			'coordY' => $this->integer()->defaultValue(0)->notNull(),
 			'radius' => $this->integer()->defaultValue(5)->notNull(),

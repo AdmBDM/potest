@@ -43,7 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
 					return Url::toRoute([$action, 'id' => $model->id]);
 				}
 			],
-//            'id',
+			[
+				'attribute' => 'id',
+				'options' => ['width' => '50px'],
+			],
 //            'tree_id',
 			[
 				'attribute' => 'createTime',
@@ -55,6 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'format' => ['date', 'php:d.m.Y H:i:s'],
 				'options' => ['width' => '200px'],
 			],
+//            'ruinTime',
 //            'coordX',
 //            'coordY',
 			[
@@ -66,7 +70,11 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => 'Испортится через',
 				'value' => function($model) {
 					if ($model->status === 0) return null;
-					return  ($model->dropTime + 60 * 60 * 2) - time() ;
+					$diff = $model->ruinTime - time() - (60 * 60 * 3);
+					if ($diff > 0) return $diff;
+					$model->status = 2;
+					$model->save();
+					return (60 * 60 * -3);
 				},
 				'format' => ['date', 'php:H:i:s'],
 				'options' => ['width' => '50px'],
@@ -81,8 +89,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				'options' => ['width' => '170px'],
 				'value' => function($model) {
 					if ($model->reminder === 0) return 'съедено';
-					if ($model->status === 1) return 'упало на землю';
-					if ($model->status === 2) return 'гнилое';
+					if ($model->status === Apple::DROP_APPLES) return 'упало на землю';
+					if ($model->status === Apple::BAD_APPLES) return 'гнилое';
 					return 'висит на дереве';
 				},
 			],
@@ -95,6 +103,5 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
         ],
     ]); ?>
-
 
 </div>

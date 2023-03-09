@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
  * @property int|null $tree_id
  * @property string $createTime
  * @property string $dropTime
+ * @property string $ruinTime
  * @property int $coordX
  * @property int $coordY
  * @property int $radius
@@ -21,18 +22,25 @@ use yii\db\ActiveRecord;
  */
 class Apple extends ActiveRecord
 {
+	const RUIN_TIME = 60 * 60 * 5;
+	const DROP_TIME = 60 * 60 * 24 * 5;
+	const GOOD_APPLES = 0;
+	const DROP_APPLES = 1;
+	const BAD_APPLES = 2;
+
 	public function __construct()
 	{
 
 		$this->tree_id = 1;
 		$this->createTime = time();
-		$this->dropTime = $this->createTime + (60 * 60 * 24 * 7);
+		$this->dropTime = $this->createTime + self::DROP_TIME;
+		$this->ruinTime = $this->dropTime + self::RUIN_TIME;
 		$this->coordX = -7;
 		$this->coordY = -7;
 		$this->radius = mt_rand(7, 17);
 		$this->color = $this->setAppleColor();
 		$this->reminder = 100;
-		$this->status = 0;
+		$this->status = self::GOOD_APPLES;
 	}
 
 	/**
@@ -50,8 +58,8 @@ class Apple extends ActiveRecord
 	{
         return [
             [['tree_id', 'coordX', 'coordY', 'radius', 'reminder', 'status'], 'integer'],
-            [['createTime', 'dropTime'], 'required'],
-            [['createTime', 'dropTime'], 'safe'],
+            [['createTime', 'dropTime', 'ruinTime'], 'required'],
+            [['createTime', 'dropTime', 'ruinTime'], 'safe'],
             [['color'], 'string', 'max' => 7],
         ];
     }
@@ -66,6 +74,7 @@ class Apple extends ActiveRecord
             'tree_id' => 'Tree ID',
             'createTime' => 'Созрело',
             'dropTime' => 'Упадёт/Упало',
+            'ruinTime' => 'Испортится',
             'coordX' => 'Coord X',
             'coordY' => 'Coord Y',
             'radius' => 'Радиус',
@@ -97,7 +106,7 @@ class Apple extends ActiveRecord
 				top: ' . $this->coordY . 'px; 
 				border-radius: 50%;
 				background-color: ' . $this->color .
-			';" id="apple' . $this->id . '"' .  $this->getOnclickStr($this->id) . '></div>';
+			';" id="apple' . $this->id . '"' .  $this->getOnclickStr($this->id,$this->status,$this->reminder) . '></div>';
 	}
 
 	/**
@@ -124,20 +133,57 @@ class Apple extends ActiveRecord
 				'style="position: relative; display: inline-block; margin: 0; padding: 0;
 				width: ' . $this->radius * 2 . 'px; 
 				height: ' . $this->radius * 2 . 'px; 
-				left: ' . $this->coordX . 'px; 
-				bottom: ' . $this->radius * 2 . 'px; 
 				border-radius: 50%;
+				left: ' . $this->coordX . 'px; 
+				bottom: -17px; 
 				background-color: ' . $this->color .
-				';" id="apple' . $this->id . '"' .  $this->getOnclickStr($this->id) . '></div>';
+				';" id="apple' . $this->id . '"' .  $this->getOnclickStr($this->id,$this->status,$this->reminder) . '></div>';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDivRuinApple(): string
+	{
+		return '<div class="apple-area" ' .
+				'style="margin: 0; padding: 0;
+				width: ' . $this->radius * 2 . 'px; 
+				height: ' . $this->radius * 2 . 'px; 
+				border-radius: 50%;' .
+				'" id="apple' . $this->id . '"' .  $this->getOnclickStr($this->id,$this->status,$this->reminder) . '></div>';
 	}
 
 	/**
 	 * @param $id
+	 * @param $status
+	 * @param $reminder
 	 *
 	 * @return string
 	 */
-	private function getOnclickStr($id): string
+	private function getOnclickStr($id, $status, $reminder): string
 	{
-		return ' onclick="clickApple(' . $id . ')"';
+//		return ' onclick="clickApple(' . $id . ')"';
+		return ' onclick="openAppleForm(' . $id . ', ' . $status . ', ' . $reminder . ')"';
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getGoodApples() {
+		return Apple::find()->where('status = ' . self::GOOD_APPLES)->all();
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getDropApples() {
+		return Apple::find()->where('status = ' . self::DROP_APPLES)->all();
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getBadApples() {
+		return Apple::find()->where('status = ' . self::BAD_APPLES)->all();
 	}
 }

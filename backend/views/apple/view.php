@@ -34,6 +34,10 @@ YiiAsset::register($this);
 				'attribute' => 'dropTime',
 				'format' => ['date', 'php:d.m.Y H:i:s'],
 			],
+			[
+				'attribute' => 'ruinTime',
+				'format' => ['date', 'php:d.m.Y H:i:s'],
+			],
             'coordX',
             'coordY',
             'radius',

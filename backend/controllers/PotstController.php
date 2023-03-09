@@ -34,9 +34,9 @@ class PotstController extends Controller
 		$treeApple = Tree::findOne(['id' => 1]);
 
 // считываем яблоки
-		$applesGood = Apple::find()->where('status = 0')->all();
-		$applesDrop = Apple::find()->where('status = 1')->all();
-		$applesBad = Apple::find()->where('status = 2')->all();
+		$applesGood = Apple::getGoodApples();
+		$applesDrop = Apple::getDropApples();
+		$applesBad = Apple::getBadApples();
 
 // размещаем яблоки на дереве
 		foreach ($applesGood as $apple) {
@@ -54,4 +54,17 @@ class PotstController extends Controller
 		]);
 	}
 
+
+	public function actionDrop() {
+		if (isset($_POST['appID'])) {
+//			myDebug($_POST);
+		}
+
+		return $this->render('/potst/index', [
+				'treeApple' => Tree::findOne(['id' => 1]),
+				'applesGood' => Apple::getGoodApples(),
+				'applesDrop' => Apple::getDropApples(),
+				'applesBad' => Apple::getBadApples(),
+		]);
+	}
 }

@@ -13,11 +13,11 @@ use yii\filters\VerbFilter;
  */
 class AppleController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
-    public function behaviors()
-    {
+	/**
+	 * @return array|\string[][][][]
+	 */
+    public function behaviors(): array
+	{
         return array_merge(
             parent::behaviors(),
             [
@@ -36,8 +36,8 @@ class AppleController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
-    {
+    public function actionIndex(): string
+	{
         $dataProvider = new ActiveDataProvider([
             'query' => Apple::find(),
             /*
@@ -63,8 +63,8 @@ class AppleController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
+    public function actionView($id): string
+	{
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -139,7 +139,7 @@ class AppleController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Запрашиваемая страница не существует.');
     }
 
 	public function actionDrop($id)
@@ -147,6 +147,7 @@ class AppleController extends Controller
 		$model = $this->findModel($id);
 		$model->status = 1;
 		$model->dropTime = time();
+		$model->ruinTime = $model->dropTime + Apple::RUIN_TIME;
 		$model->save();
 		return $this->redirect(['index']);
 	}
